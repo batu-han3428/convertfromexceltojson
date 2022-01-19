@@ -102,7 +102,7 @@
         const createTable = (a) => {
 
             let html = `
-            <div class="table-responsive w-50 ms-auto me-auto">
+            <div id='table' class="table-responsive w-50 ms-auto me-auto">
                 <table class="table table-striped table-dark table-hover">
                     <thead>
                         <tr>
@@ -130,7 +130,12 @@
             </div>
             `;
 
-            document.getElementById('fileUpload').insertAdjacentHTML('afterend',html);
+            if(!$('#table').is('div'))
+                document.getElementById('fileUpload').insertAdjacentHTML('afterend',html);
+            else{
+                document.getElementById('table').remove();
+                document.getElementById('fileUpload').insertAdjacentHTML('afterend',html);
+            }
         } 
 
 
