@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="upload-csv" accept=".csv">
+    <button id="btn-upload-csv"> CSV to JSON</button>
+    <table id="tbl-data"></table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        
+        let btn_upload = document.getElementById("btn-upload-csv");
+        btn_upload.addEventListener('click', ()=> 
+        {
+            Papa.parse(document.getElementById('upload-csv').files[0], {
+                download:true,
+                header:false,
+                complete: async function(results){
+
+                    let basliklar = results.data[0][0].split(";");
+
+                    var json = "[";
+   
+                    results.data.map((veriler, index)=>{
+
+                        let veri = veriler[0].split(";");
+  
+                        if(index !== 0 && veriler[0] !== ''){
+                            json += `{"${basliklar[0]}":"${veri[0]}","${basliklar[1]}":${veri[1]}},`;
+                        }
+                    })
+                        
+                    json+= "]";
+                                           
+                    $.ajax({
+                        url: 'https://localhost:5001/api/Convert/ConvertToJson',
+                        type: 'POST',
+                        contentType: "application/json",
+                        dataType: 'json',
+                        data: JSON.stringify(json),
+                        success: function (gelenveri) {
+                            console.log(gelenveri)
+                        },
+                        error: function (hata) {
+        
+                        }
+                    });
+  
+                }
+            });
+        } );      
+    
+    </script>
+    <script src="PapaParse-5.0.2/papaparse.min.js"></script>
+</body>
+</html>
