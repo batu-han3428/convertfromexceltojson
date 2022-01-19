@@ -19,12 +19,12 @@ namespace api.Controllers
 
             string veri1 = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(veri.ToString()));
 
-            if (System.IO.File.Exists(@"C:\Users\batu_\Desktop\Excel.json"))
+            if (System.IO.File.Exists("dosya yolunu gir"))
             {
-                veri2 = System.IO.File.ReadAllText(@"C:\Users\batu_\Desktop\Excel.json");
+                veri2 = System.IO.File.ReadAllText("dosya yolunu gir");
             }
 
-            System.IO.File.WriteAllText(@"C:\Users\batu_\Desktop\Excel.json", veri2+"-"+veri1);
+            System.IO.File.WriteAllText("dosya yolunu gir", veri2+"-"+veri1);
 
             return Ok(veri1);
         }
