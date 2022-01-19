@@ -35,9 +35,7 @@
                     if(results.data[0].indexOf(";")!==-1)
                         basliklar = results.data[0][0].split(";");                       
 
-                    var json = "[";
-                    
-                    
+                    var json = "[";                                 
 
                     const olustur = (sayi)=>{                          
                         return `"${bas[sayi]}":`;                            
@@ -83,8 +81,7 @@
                         dataType: 'json',
                         data: JSON.stringify(json),
                         success: function (gelenveri) {
-                            createTable(gelenveri)   
-                            console.log(gelenveri)                     
+                            createTable(gelenveri)                      
                         },
                         error: function (hata) {
                             console.error(hata);
@@ -154,15 +151,32 @@
             `;
 
             a.map((value,index)=>{
-                console.log(value)
+              
                 html +=`
-                <tr>
-                    <th scope="row">${index+1}</th>
-                    <td>${value.Çalışanlar}</td>
-                    <td>${value.Yaş}</td>
-                    <td>${Number(value.Maaş).formatMoney(2, ',', '.')} TL</td>
-                </tr>                 
+                    <tr>
+                        <th scope="row">${index+1}</th>
                 `;
+
+
+                let k = JSON.stringify(value).replace("{","").replace(/"/g,"").replace(/}/g,"").split(":").join().split(",");
+
+              
+                k.forEach((deger,index)=>{
+                   
+                    if(index%2 !== 0){
+                        console.log(deger,index)
+                        html+=`            
+                        <td scope="col">${deger}</td>
+                    `;
+                    }                  
+                })
+               
+               
+
+                html +=`
+                    </tr>     
+                `;
+
             });
 
             html += `        
