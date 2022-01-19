@@ -26,12 +26,13 @@
             Papa.parse(document.getElementById('upload-csv').files[0], {
                 download:true,
                 header:false,
+                encoding: "ISO-8859-9",
                 complete: async function(results){
 
                     let basliklar = results.data[0][0].split(";");
 
                     var json = "[";
-   
+             
                     results.data.map((veriler, index)=>{
 
                         let veri = veriler[0].split(";");
@@ -50,8 +51,7 @@
                         dataType: 'json',
                         data: JSON.stringify(json),
                         success: function (gelenveri) {
-                            createTable(gelenveri)
-                          
+                            createTable(gelenveri)                        
                         },
                         error: function (hata) {
         
@@ -95,8 +95,6 @@
 
             document.getElementById('fileUpload').insertAdjacentHTML('afterend',html);
         } 
-
-
 
 
     </script>
