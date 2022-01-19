@@ -161,12 +161,18 @@
                 let k = JSON.stringify(value).replace("{","").replace(/"/g,"").replace(/}/g,"").split(":").join().split(",");
 
               
-                k.forEach((deger,index)=>{
-                   
+                k.forEach((deger,index)=>{                
                     if(index%2 !== 0){
-                        html+=`            
-                        <td scope="col">${deger}</td>
-                    `;
+                       
+                        if(!isNaN(deger))
+                            html+=`            
+                                <td scope="col">${Number(deger).formatMoney(2, ',', '.')}</td>
+                            `;
+                            // <td scope="col">${deger}</td>
+                        else
+                            html+=`            
+                                <td scope="col">${deger}</td>
+                            `;
                     }                  
                 })
                
