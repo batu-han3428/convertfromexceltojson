@@ -15,11 +15,18 @@ namespace api.Controllers
         public IActionResult ConvertToJson(object veri)
         {
 
+            string veri2 = "";
+
             string veri1 = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(veri.ToString()));
 
-            System.IO.File.WriteAllText(@"C:\Users\bfindik.EKOFACTORING\Desktop\dosya.json", veri1);
+            if (System.IO.File.Exists(@"C:\Users\batu_\Desktop\Excel.json"))
+            {
+                veri2 = System.IO.File.ReadAllText(@"C:\Users\batu_\Desktop\Excel.json");
+            }
 
-            return Ok();
+            System.IO.File.WriteAllText(@"C:\Users\batu_\Desktop\Excel.json", veri2+"-"+veri1);
+
+            return Ok(veri1);
         }
     }
 }
