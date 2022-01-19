@@ -8,7 +8,6 @@
     <title>Home</title>
 </head>
 <body>
-
     <div id="fileUpload" class="input-group mb-5 w-25 ms-auto me-auto mt-5">
         <input type="file" id="upload-csv" class="form-control" accept=".csv">
         <button class="btn btn-outline-secondary" id="btn-upload-csv"> CSV to JSON</button>
@@ -25,72 +24,71 @@
         {
             if(document.getElementById('upload-csv').files[0] !== undefined){
                 Papa.parse(document.getElementById('upload-csv').files[0], {
-                download:true,
-                header:false,
-                encoding: "ISO-8859-9",
-                complete: async function(results){
-                    bas = [];
-                    let basliklar = "";
+                    download:true,
+                    header:false,
+                    encoding: "ISO-8859-9",
+                    complete: async function(results){
 
-                    if(results.data[0].indexOf(";")!==-1)
-                        basliklar = results.data[0][0].split(";");                       
+                        bas = [];
 
-                    var json = "[";                                 
+                        var json = "[";                                 
 
-                    const olustur = (sayi)=>{                          
-                        return `"${bas[sayi]}":`;                            
-                    }
+                        const olustur = (sayi)=>{                          
+                            return `"${bas[sayi]}":`;                                                     
+                        }
 
+                        let o = 0;
 
-                    let o = 0;
-                    results.data.map((veriler, index)=>{
+                        results.data.map((veriler, index)=>{
 
-
-                        if(index === 0){
-                            veriler.forEach(element => {
-                                bas.push(element)
-                            });                                       
-                        }else{
-                            if(veriler[0] !== ''){
-                                json += `{`;
+                            if(index === 0){
+                                veriler.forEach(element => {
+                                    bas.push(element)
+                                });                                       
+                            }else{
+                                if(veriler[0] !== ''){
+                                    json += `{`;
+                                
+                                    veriler.forEach(element=>{
+                                        if(o===bas.length)
+                                            o = 0;
+                                        json+=olustur(o)                                    
+                                        json+=`"${element}",`;  
+                                        o++;               
+                                    })
                             
-                                veriler.forEach(element=>{
-                                    if(o===bas.length)
-                                        o = 0;
-                                    json+=olustur(o)                                    
-                                    json+=`"${element}",`;  
-                                    o++;               
-                                })
-                         
-                                if(results.data.length === index+2)
-                                    json+=`}`;
-                                else
-                                    json+=`},`;
-                            }                         
-                        }
-                    
-                       
-                    })
+                                    if(results.data.length === index+2)
+                                        json+=`}`;
+                                    else
+                                        json+=`},`;
+                                }                         
+                            }
+                        });
+                            
+                        json+= "]";                   
                         
-                    json+= "]";                   
-                    
-                    $.ajax({
-                        url: 'https://localhost:5001/api/Convert/ConvertToJson',
-                        type: 'POST',
-                        contentType: "application/json",
-                        dataType: 'json',
-                        data: JSON.stringify(json),
-                        success: function (gelenveri) {
-                            createTable(gelenveri)                      
-                        },
-                        error: function (hata) {
-                            console.error(hata);
-                        }
-                    });
-  
+                        $.ajax({
+                            url: 'https://localhost:5001/api/Convert/ConvertToJson',
+                            type: 'POST',
+                            contentType: "application/json",
+                            dataType: 'json',
+                            data: JSON.stringify(json),
+                            success: function (gelenveri) {
+                                createTable(gelenveri)                      
+                            },
+                            error: function (request, status, error) {
+                                setTimeout(() => {
+                                    console.clear();
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Beklenmeyen Bir Hata Oluştu..!'
+                                    })                                                     
+                                }, 500);                        
+                            }
+                        });
                     }
-                });
-        
+                });      
             }else{
                 Swal.fire({
                     icon: 'error',
@@ -98,8 +96,6 @@
                     text: 'Lütfen Dosya Seçiniz..!'
                 })
             }
-
-           
         } );      
         
         Number.prototype.formatMoney = function (fractionDigits, decimal, separator) {
@@ -157,10 +153,8 @@
                         <th scope="row">${index+1}</th>
                 `;
 
-
                 let k = JSON.stringify(value).replace("{","").replace(/"/g,"").replace(/}/g,"").split(":").join().split(",");
-
-              
+             
                 k.forEach((deger,index)=>{                
                     if(index%2 !== 0){
                        
@@ -175,8 +169,6 @@
                             `;
                     }                  
                 })
-               
-               
 
                 html +=`
                     </tr>     
