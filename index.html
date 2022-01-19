@@ -37,49 +37,24 @@
 
                     var json = "[";
                     
-                    let bas = [];
+               
 
-                    const olustur = (sayi)=>{                          
-                        return `"${bas[sayi]}":`;                            
-                    }
-
-
-                    let o = 0;
                     results.data.map((veriler, index)=>{
 
+                        console.log(veriler)
+                        let veri = "";
 
-                        if(index === 0){
-                            veriler.forEach(element => {
-                                bas.push(element)
-                            });                                       
-                        }else{
-                            if(veriler[0] !== ''){
-                                json += `{`;
-                                console.log(veriler);  
-
-                            
-                                veriler.forEach(element=>{
-                                    if(o===bas.length)
-                                        o = 0;
-                                    json+=olustur(o)                                    
-                                    json+=`"${element}",`;  
-                                    o++;               
-                                })
-                         
-                                if(results.data.length === index+2)
-                                    json+=`}`;
-                                else
-                                    json+=`},`;
-                            }                         
+                        if(veriler[0].indexOf(";")!==-1)
+                            veri = veriler[0].split(";");    
+                        
+      
+                        if(index !== 0 && veriler[0] !== ''){
+                            json += `{"${basliklar[0]}":"${veri[0]}","${basliklar[1]}":${veri[1]}},`;
                         }
-                    
-                       
                     })
                         
                     json+= "]";
-                    
-                    console.log(json)
-                    
+                                           
                     $.ajax({
                         url: 'https://localhost:5001/api/Convert/ConvertToJson',
                         type: 'POST',
