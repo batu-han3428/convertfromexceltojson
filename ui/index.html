@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <div id="fileUpload" class="input-group mb-3 w-25 ms-auto me-auto mt-5">
+    <div id="fileUpload" class="input-group mb-5 w-25 ms-auto me-auto mt-5">
         <input type="file" id="upload-csv" class="form-control" accept=".csv">
         <button class="btn btn-outline-secondary" id="btn-upload-csv"> CSV to JSON</button>
     </div>
@@ -72,11 +72,37 @@
 
            
         } );      
-    
+        
+        Number.prototype.formatMoney = function (fractionDigits, decimal, separator) {
+            
+            fractionDigits = isNaN(fractionDigits = Math.abs(fractionDigits)) ? 2 : fractionDigits;
+            
+            decimal = typeof (decimal) === "undefined" ? "." : decimal;
+            
+            separator = typeof (separator) === "undefined" ? "," : separator;
+            
+            var number = this;
+            
+            var neg = number < 0 ? "-" : "";
+            
+            var wholePart = parseInt(number = Math.abs(+number || 0).toFixed(fractionDigits)) + "";
+            
+            var separtorIndex = (separtorIndex = wholePart.length) > 3 ? separtorIndex % 3 : 0;
+            
+            return neg +
+            
+            (separtorIndex ? wholePart.substr(0, separtorIndex) + separator : "") +
+            
+            wholePart.substr(separtorIndex).replace(/(\d{3})(?=\d)/g, "$1" + separator) +
+            
+            (fractionDigits ? decimal + Math.abs(number - wholePart).toFixed(fractionDigits).slice(2) : "");
+        
+        };
+
         const createTable = (a) => {
 
             let html = `
-            <div class="table-responsive">
+            <div class="table-responsive w-50 ms-auto me-auto">
                 <table class="table table-striped table-dark table-hover">
                     <thead>
                         <tr>
@@ -93,7 +119,7 @@
                 <tr>
                     <th scope="row">${index+1}</th>
                     <td>${value.Tarih}</td>
-                    <td>${value.Tutar}</td>
+                    <td>${Number(value.Tutar).formatMoney(2, ',', '.')} TL</td>
                 </tr>                 
                 `;
             });
