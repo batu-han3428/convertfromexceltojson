@@ -10,7 +10,7 @@
 <body>
     <div id="fileUpload" class="input-group mb-5 w-25 ms-auto me-auto mt-5">
         <input type="file" id="upload-csv" class="form-control" accept=".csv">
-        <button class="btn btn-outline-secondary" id="btn-upload-csv"> CSV to JSON</button>
+        <button class="btn btn-outline-secondary" id="btn-upload-csv" type="button"> CSV to JSON</button>
     </div>
 
 
@@ -28,7 +28,7 @@
                     download:true,
                     header:false,
                     encoding: "ISO-8859-9",
-                    complete: async function(results){
+                    complete: function(results){
               
                         bas = [];
 
@@ -74,8 +74,8 @@
                             contentType: "application/json",
                             dataType: 'json',
                             data: JSON.stringify(json),
-                            success: function (gelenveri) {
-                                createTable(gelenveri)      
+                            success: function (data) {
+                                createTable(data)      
                                 dowloadFile()                
                             },
                             error: function (request, status, error) {
@@ -102,7 +102,7 @@
         
         const dowloadFile = () =>{
 
-            fetch('dosyalar/dosya.json')
+            fetch('https://localhost:5001/api/Convert/DownloadJson')
             .then(resp => resp.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(blob);
@@ -114,14 +114,9 @@
                 a.click();
                 window.URL.revokeObjectURL(url);
                 a.remove();
-                window.onbeforeunload = function() {
-                    return false;
-                }
             })
             .catch((a) => console.error(a));
 
-
-            // http://127.0.0.1:5500/convertfromexceltojson/ui/dosyalar/dosya.json
         }
 
         Number.prototype.formatMoney = function (fractionDigits, decimal, separator) {
