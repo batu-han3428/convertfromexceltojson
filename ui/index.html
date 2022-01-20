@@ -23,12 +23,13 @@
         btn_upload.addEventListener('click', ()=> 
         {
             if(document.getElementById('upload-csv').files[0] !== undefined){
+     
                 Papa.parse(document.getElementById('upload-csv').files[0], {
                     download:true,
                     header:false,
                     encoding: "ISO-8859-9",
                     complete: async function(results){
-
+              
                         bas = [];
 
                         var json = "[";                                 
@@ -74,7 +75,8 @@
                             dataType: 'json',
                             data: JSON.stringify(json),
                             success: function (gelenveri) {
-                                createTable(gelenveri)                      
+                                createTable(gelenveri)      
+                                dowloadFile()                
                             },
                             error: function (request, status, error) {
                                 setTimeout(() => {
@@ -98,6 +100,30 @@
             }
         } );      
         
+        const dowloadFile = () =>{
+
+            fetch('dosyalar/dosya.json')
+            .then(resp => resp.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'dosya.json';
+                document.body.appendChild(a); 
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                window.onbeforeunload = function() {
+                    return false;
+                }
+            })
+            .catch((a) => console.error(a));
+
+
+            // http://127.0.0.1:5500/convertfromexceltojson/ui/dosyalar/dosya.json
+        }
+
         Number.prototype.formatMoney = function (fractionDigits, decimal, separator) {
             
             fractionDigits = isNaN(fractionDigits = Math.abs(fractionDigits)) ? 2 : fractionDigits;
