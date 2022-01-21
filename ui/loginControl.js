@@ -1,5 +1,3 @@
-let uye = "batuhan";
-
 const loginControl = () =>{
     let Mail = document.getElementById('email').value;
     let Password =document.getElementById('password').value;
