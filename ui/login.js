@@ -13,18 +13,3 @@ $(".close-btn").click(function(){
         $("#login-button").fadeIn(800);
     });
 });
-  
-
-let uye = "batuhan";
-
-const loginControl = () =>{
-    let email = document.getElementById('email').value;
-    
-    if(email !== "" && uye === email){
-        $('#loginPage').animate({ "top": "-=1000px", opacity: 0 }, "slow" ).fadeOut();
-
-        $('#fileUpload').fadeIn().animate({ "top": "200", opacity: 1 }, "slow" )
-    }
-}
-
-document.getElementById('loginButton').addEventListener('click',loginControl);
