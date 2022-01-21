@@ -198,20 +198,6 @@ html {
     color: rgba(255,255,255,.6);
   }
   
-  #forgotten-container{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 260px;
-    height: 180px;
-    border-radius: 10px;
-    background: rgba(3,3,3,0.25);
-    box-shadow: 1px 1px 50px #000;
-    display: none;
-  }
   
   .orange-btn{
     background: rgba(87,198,255,.5);
