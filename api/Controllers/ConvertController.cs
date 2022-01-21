@@ -41,8 +41,38 @@ namespace api.Controllers
                 veri = System.IO.File.ReadAllText(@"C:\Users\bfindik.EKOFACTORING\Desktop\dosyalar\dosya.json");
             }
 
-           
+
             return Ok(veri);
+        }
+
+
+        [HttpPost("LoginControl")]
+        public IActionResult LoginControl(User user)
+        {
+            if (user.mail == "" || user.password == "")
+            {
+                return NotFound();
+            }
+            else
+            {
+
+                string veri = System.IO.File.ReadAllText(@"C:\Users\bfindik.EKOFACTORING\Desktop\dosyalar\users.json");
+
+                List<User> users = JsonConvert.DeserializeObject<List<User>>(veri);
+
+                foreach (var User in users)
+                {
+                    if (User.mail == user.mail)
+                    {
+                        if (User.password == user.password)
+                        {
+                            return Ok();
+                        }
+                    }
+                }
+
+                return Unauthorized();
+            }
         }
     }
 }
